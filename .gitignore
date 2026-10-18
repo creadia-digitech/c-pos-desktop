@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Production build artifacts
+dist/
+dist-electron/
+release/
+
+# Environment and sensitive tokens
+.env
+.env.*
+*.dat
+*TOKEN*
+*token*
+*.txt
+
+# OS files
+Thumbs.db
+.DS_Store

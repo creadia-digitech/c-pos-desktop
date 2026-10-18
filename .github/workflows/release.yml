@@ -1,0 +1,46 @@
+name: Build & Release C-POS Desktop
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Nomor Versi Rilis (contoh: 1.0.1)'
+        required: true
+        default: '1.0.1'
+      release_notes:
+        description: 'Catatan Pembaruan (Changelog)'
+        required: false
+        default: 'Peningkatan performa, stabilitas SQLite, dan perbaikan cetak thermal.'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Update Version in package.json
+        shell: bash
+        run: |
+          NEW_VER="${{ github.event.inputs.version }}"
+          node -e "const pkg = require('./package.json'); pkg.version = '$NEW_VER'; require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));"
+          echo "Updated package.json to version $NEW_VER"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile and Publish via electron-builder
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: npm run release

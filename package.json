@@ -1,0 +1,87 @@
+{
+  "name": "c-pos",
+  "version": "1.0.0",
+  "description": "C-POS - Sistem Point of Sale Offline Desktop",
+  "main": "dist-electron/main.cjs",
+  "scripts": {
+    "build:electron": "esbuild electron/main.ts --outfile=dist-electron/main.cjs --platform=node --bundle --external:electron && esbuild electron/preload.ts --outfile=dist-electron/preload.cjs --platform=node --bundle --external:electron",
+    "dev": "vite",
+    "build": "vite build && npm run build:electron",
+    "preview": "vite preview",
+    "electron:dev": "npm run build:electron && concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:portable": "npm run build && electron-builder --win portable",
+    "release": "npm run build && electron-builder --publish always",
+    "gen-key": "node scripts/generate-license.cjs"
+  },
+  "keywords": [
+    "pos",
+    "point-of-sale",
+    "offline",
+    "desktop"
+  ],
+  "author": "C-POS",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "electron-updater": "^6.8.9",
+    "framer-motion": "^11.11.0",
+    "html5-qrcode": "^2.3.8",
+    "jsbarcode": "^3.12.3",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "recharts": "^2.13.0",
+    "uuid": "^11.0.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/jsbarcode": "^3.11.4",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.3",
+    "concurrently": "^9.1.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.cpos.app",
+    "productName": "C-POS Offline Desktop",
+    "directories": {
+      "output": "release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "creadia-digitech",
+        "repo": "c-pos-desktop"
+      }
+    ],
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "public/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "icon": "public/logo.ico"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

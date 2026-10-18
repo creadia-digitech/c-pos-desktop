@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-POS — Master Developer & License Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080C16;
+      --surface: #0F172A;
+      --surface-card: rgba(16, 24, 40, 0.72);
+      --surface-card-hover: rgba(22, 33, 56, 0.85);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(0, 184, 148, 0.55);
+      --primary: #00B894;
+      --primary-glow: rgba(0, 184, 148, 0.35);
+      --blue: #3B82F6;
+      --blue-glow: rgba(59, 130, 246, 0.35);
+      --amber: #F59E0B;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      --purple: #8B5CF6;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-sub: #64748B;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding: 24px 16px 60px 16px;
+      line-height: 1.5;
+    }
+
+    /* Ambient Luxury Mesh Glows matching C-POS backdrop */
+    .mesh-glow-1 {
+      position: fixed;
+      top: -200px;
+      left: 10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 184, 148, 0.14) 0%, transparent 68%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .mesh-glow-2 {
+      position: fixed;
+      bottom: -150px;
+      right: 5%;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px 24px;
+      border-radius: 20px;
+      background: var(--surface-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(0, 184, 148, 0.12);
+      border: 1px solid rgba(0, 184, 148, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(0, 184, 148, 0.2);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 8px;
+      background: rgba(0, 184, 148, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(0, 184, 148, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-text p {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* Tab Switcher Controls */
+    .nav-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 4px;
+    }
+
+    .nav-tab-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-tab-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-tab-btn.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-tab-btn.active.release-active {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93C5FD;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-badge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: #3B82F6;
+      color: #FFF;
+      text-transform: uppercase;
+    }
+
+    /* Main Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Glass Cards */
+    .card {
+      background: var(--surface-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-title {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-title svg {
+      color: var(--primary);
+    }
+
+    .card-step {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--primary);
+      background: rgba(0, 184, 148, 0.12);
+      padding: 3px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 184, 148, 0.25);
+    }
+
+    /* Form Elements */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.45);
+      color: #FFF;
+      font-size: 0.92rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.2);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .form-input.mono {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      font-size: 0.98rem;
+      color: #38BDF8;
+    }
+
+    .btn-paste {
+      position: absolute;
+      right: 8px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      color: #E2E8F0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-paste:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFF;
+    }
+
+    /* Interactive 4-Tier License Radio Cards */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .tier-card {
+      position: relative;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tier-card:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-1px);
+    }
+
+    .tier-card.selected {
+      border-color: var(--primary);
+      background: rgba(0, 184, 148, 0.1);
+      box-shadow: 0 0 20px rgba(0, 184, 148, 0.2);
+    }
+
+    .tier-card.selected.year-selected {
+      border-color: var(--blue);
+      background: rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .tier-card.selected.trial-selected {
+      border-color: var(--amber);
+      background: rgba(245, 158, 11, 0.1);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tier-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tier-tag {
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-life { background: rgba(0, 184, 148, 0.2); color: #00B894; }
+    .tag-year { background: rgba(59, 130, 246, 0.2); color: #60A5FA; }
+    .tag-trial { background: rgba(245, 158, 11, 0.2); color: #F59E0B; }
+
+    .tier-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Action Buttons */
+    .btn-primary {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: none;
+      background: #00B894;
+      background-image: linear-gradient(135deg, #00B894 0%, #009B7D 100%);
+      color: #080C16;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 8px 24px rgba(0, 184, 148, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 184, 148, 0.5);
+      filter: brightness(1.08);
+    }
+
+    .btn-blue {
+      background: #3B82F6;
+      background-image: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      color: #FFF;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-blue:hover {
+      box-shadow: 0 12px 28px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Output Section */
+    .output-card {
+      border: 1px solid rgba(0, 184, 148, 0.35);
+      background: radial-gradient(circle at top, rgba(0, 184, 148, 0.08) 0%, rgba(15, 23, 42, 0.7) 100%);
+    }
+
+    .key-display-box {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 184, 148, 0.4);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 0 25px rgba(0, 184, 148, 0.15) inset;
+    }
+
+    .key-text {
+      font-family: var(--font-mono);
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #00B894;
+      text-align: center;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 12px rgba(0, 184, 148, 0.6);
+      word-break: break-all;
+    }
+
+    .key-text.empty {
+      color: var(--text-sub);
+      font-size: 0.88rem;
+      letter-spacing: 0.02em;
+      text-shadow: none;
+    }
+
+    .wa-preview-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.78rem;
+      color: #CBD5E1;
+      white-space: pre-wrap;
+      max-height: 140px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+
+    /* History Table */
+    .history-card {
+      grid-column: 1 / -1;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.78rem;
+    }
+
+    th {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .badge-life { color: #00B894; background: rgba(0, 184, 148, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+    .badge-year { color: #60A5FA; background: rgba(59, 130, 246, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+    .badge-trial { color: #F59E0B; background: rgba(245, 158, 11, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+
+    /* Cloud Release Hub Styles */
+    .release-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .release-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat-pill {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #FFF;
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .step-circle.active {
+      background: #3B82F6;
+      color: #FFF;
+      box-shadow: 0 0 12px #3B82F6;
+      animation: pulse 1.5s infinite;
+    }
+
+    .step-circle.done {
+      background: #10B981;
+      color: #FFF;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F172A;
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-action-sm {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: #CBD5E1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-sm:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh-glow-1"></div>
+  <div class="mesh-glow-2"></div>
+
+  <div class="container">
+    <!-- Navbar Header -->
+    <header class="navbar">
+      <div class="brand-wrap">
+        <div class="brand-logo">
+          <svg viewBox="0 0 40 40" width="30" height="30" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="#00B894" stroke-width="2.5" stroke-dasharray="4 2"/>
+            <path d="M25 15C23.8 13.5 21.8 12.5 19.5 12.5C15.35 12.5 12 15.85 12 20C12 24.15 15.35 27.5 19.5 27.5C22.2 27.5 24.5 26.1 25.5 24" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="26" cy="20" r="3" fill="#00B894"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>
+            <span>C-POS Developer Hub</span>
+            <span class="brand-badge">Master Control</span>
+          </h1>
+          <p>Manajemen Lisensi Klien & Pusat Rilis Cloud Auto-Update GitHub</p>
+        </div>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="nav-tabs">
+        <button class="nav-tab-btn active" id="tabBtnLicense" onclick="switchView('license')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Lisensi & Klien</span>
+        </button>
+
+        <button class="nav-tab-btn" id="tabBtnRelease" onclick="switchView('release')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+          </svg>
+          <span>Pusat Rilis Cloud</span>
+          <span class="tab-badge">CI/CD</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ════════ VIEW 1: LICENSE GENERATOR & REGISTRY ════════ -->
+    <div id="viewLicense" style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="grid">
+        <!-- Left Panel: Input & Settings -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              <span>Data Perangkat & Calon Pembeli</span>
+            </div>
+            <span class="card-step">Langkah 1</span>
+          </div>
+
+          <!-- HWID Input -->
+          <div class="form-group">
+            <label class="form-label">
+              <span>ID Perangkat Komputer (HWID) *</span>
+              <span style="font-size: 0.68rem; color: var(--text-sub);">Format: CPOS-XXXX-XXXX-XXXX</span>
+            </label>
+            <div class="form-input-wrap">
+              <input
+                type="text"
+                id="inputHwid"
+                class="form-input mono"
+                placeholder="Tempel HWID (misal: CPOS-4F8E-903D-4844)"
+                autofocus
+              />
+              <button type="button" class="btn-paste" onclick="pasteHwid()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Tempel HWID</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Store Name & Phone -->
+          <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 10px;">
+            <div class="form-group">
+              <label class="form-label">Nama Toko / Usaha *</label>
+              <input type="text" id="inputStoreName" class="form-input" placeholder="Contoh: Kopi Kenangan" value="Toko Kasir" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp Pembeli</label>
+              <input type="text" id="inputPhone" class="form-input" placeholder="08xxxxxxxxxx" />
+            </div>
+          </div>
+
+          <!-- 4-Tier Interactive Package Selector -->
+          <div class="form-group">
+            <label class="form-label">Pilih Paket Lisensi *</label>
+            <div class="tier-grid">
+              <!-- Tier 1: Lifetime -->
+              <div class="tier-card selected" id="card-LIFE" onclick="selectTier('LIFE')">
+                <div class="tier-header">
+                  <span class="tier-title">⭐ LIFETIME</span>
+                  <span class="tier-tag tag-life">Permanen</span>
+                </div>
+                <div class="tier-desc">Aktivasi seumur hidup, tanpa biaya bulanan / tahunan.</div>
+              </div>
+
+              <!-- Tier 2: 1 Tahun -->
+              <div class="tier-card" id="card-YEAR" onclick="selectTier('YEAR')">
+                <div class="tier-header">
+                  <span class="tier-title">📅 1 TAHUN</span>
+                  <span class="tier-tag tag-year">Langganan</span>
+                </div>
+                <div class="tier-desc">Masa aktif 365 hari, cocok skema perpanjangan tahunan.</div>
+              </div>
+
+              <!-- Tier 3: Demo 7 Hari -->
+              <div class="tier-card" id="card-TR07" onclick="selectTier('TR07')">
+                <div class="tier-header">
+                  <span class="tier-title">🚀 DEMO 7 HARI</span>
+                  <span class="tier-tag tag-trial">Gratis</span>
+                </div>
+                <div class="tier-desc">Uji coba gratis 7 hari, batas 50 transaksi kasir.</div>
+              </div>
+
+              <!-- Tier 4: Demo 14 Hari -->
+              <div class="tier-card" id="card-TR14" onclick="selectTier('TR14')">
+                <div class="tier-header">
+                  <span class="tier-title">⏳ DEMO 14 HARI</span>
+                  <span class="tier-tag tag-trial">Trial Plus</span>
+                </div>
+                <div class="tier-desc">Uji coba 14 hari penuh, batas 100 transaksi kasir.</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary" onclick="generateKey()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span>Kalkulasi & Buat Serial Key HMAC-SHA256</span>
+          </button>
+        </div>
+
+        <!-- Right Panel: Result & WhatsApp Output -->
+        <div class="card output-card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 2l-2 2m-1-1l-3 3m2 2l-3 3m-2-2l-3 3m2 2l-3 3M3 21l3-3"></path>
+              </svg>
+              <span>Serial Key & Notifikasi WhatsApp</span>
+            </div>
+            <span class="card-step" style="background: rgba(0, 184, 148, 0.15); color: #00B894;">Langkah 2</span>
+          </div>
+
+          <!-- Luminous Serial Key Box -->
+          <div class="key-display-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                Serial Key Aktivasi Resmi
+              </span>
+              <button class="btn-action-sm" onclick="copySerialKeyOnly()">Salin Key Saja</button>
+            </div>
+            <div class="key-text empty" id="keyOutputDisplay">
+              [ Klik tombol 'Kalkulasi & Buat Serial Key' ]
+            </div>
+          </div>
+
+          <!-- WhatsApp Message Preview -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label">Draft Pesan WhatsApp Siap Kirim</label>
+              <button class="btn-action-sm" onclick="copyWaText()">Salin Pesan WA</button>
+            </div>
+            <textarea id="waPreviewText" class="wa-preview-box" rows="5" readonly placeholder="Pesan WhatsApp otomatis dibuat setelah Anda mengklik tombol Buat Serial Key..."></textarea>
+          </div>
+
+          <a id="btnWaDirect" href="javascript:void(0)" onclick="openWhatsAppDirect()" class="btn-primary btn-blue" style="text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            <span>Kirim Pesan ke WhatsApp Pelanggan</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="card history-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Riwayat Lisensi Klien (Tersimpan Lokal)</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-action-sm" onclick="exportCsv()">Ekspor CSV</button>
+            <button class="btn-action-sm" onclick="clearHistory()" style="color: #EF4444;">Hapus Riwayat</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Nama Toko</th>
+                <th>HWID Mesin</th>
+                <th>Serial Key Diterbitkan</th>
+                <th>Tipe</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ VIEW 2: CLOUD RELEASE & AUTO-UPDATE HUB ════════ -->
+    <div id="viewRelease" style="display: none; flex-direction: column; gap: 20px;">
+      <!-- Repository Overview Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+            <span>Koneksi Repository Rilis GitHub</span>
+          </div>
+          <button class="btn-action-sm" onclick="checkGitHubReleaseStatus()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Sinkronkan Status Live</span>
+          </button>
+        </div>
+
+        <div class="release-stats-grid">
+          <div class="stat-pill">
+            <span class="stat-label">Repository GitHub</span>
+            <span class="stat-val" style="font-size: 0.92rem; color: #60A5FA;">creadia-digitech/c-pos-desktop</span>
+          </div>
+
+          <div class="stat-pill">
+            <span class="stat-label">Versi Publikasi Terakhir</span>
+            <span class="stat-val" id="ghLatestVersion" style="color: #10B981;">v1.0.0</span>
+          </div>
+
+          <div class="stat-pill">
+            <span class="stat-label">Status Cloud Runner</span>
+            <span class="stat-val" id="ghWorkflowStatus" style="font-size: 0.92rem; color: #CBD5E1;">Siap Siaga (Idle)</span>
+          </div>
+
+          <div class="stat-pill">
+            <span class="stat-label">Total Unduhan Kasir</span>
+            <span class="stat-val" id="ghTotalDownloads" style="color: #F59E0B;">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloud Trigger Form Grid -->
+      <div class="grid">
+        <!-- Form Trigger -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>Trigger Rilis Pembaruan Otomatis</span>
+            </div>
+            <span class="card-step" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA;">GitHub Cloud</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Nomor Versi Rilis Baru *</span>
+              <span style="font-size: 0.68rem; color: var(--text-sub);">Format Semantic (X.Y.Z)</span>
+            </label>
+            <input type="text" id="inputReleaseVersion" class="form-input mono" placeholder="1.0.1" value="1.0.1" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Catatan Pembaruan (Changelog)</label>
+            <textarea id="inputChangelog" class="form-input" rows="3" placeholder="Contoh: Peningkatan kestabilan cetak printer thermal 58mm, perbaikan kalkulasi diskon grosir, dan pembaruan antarmuka kasir."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Token Rahasia GitHub Developer</span>
+              <span style="font-size: 0.68rem; color: #10B981;">Tersimpan Aman di Laptop</span>
+            </label>
+            <div class="form-input-wrap">
+              <input type="password" id="inputGhToken" class="form-input mono" placeholder="ghp_••••••••••••••••••••••••••••••••••••" />
+              <button type="button" class="btn-paste" onclick="toggleTokenVisibility()">Lihat / Sembunyi</button>
+            </div>
+          </div>
+
+          <button type="button" id="btnTriggerRelease" class="btn-primary btn-blue" onclick="triggerCloudBuild()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+            </svg>
+            <span>🚀 Mulai Kompilasi & Publikasi Cloud GitHub</span>
+          </button>
+        </div>
+
+        <!-- Live Pipeline Monitor -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 14 14"></polyline>
+              </svg>
+              <span>Live Cloud Build Tracker</span>
+            </div>
+            <span id="trackerBadge" class="card-step" style="background: rgba(255, 255, 255, 0.08); color: #CBD5E1;">Menunggu</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="pipeline-step">
+              <div class="step-circle" id="step1Circle">1</div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Trigger Cloud Dispatch</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step1Desc">Mengirim perintah rilis terenkripsi ke GitHub Actions API</div>
+              </div>
+            </div>
+
+            <div class="pipeline-step">
+              <div class="step-circle" id="step2Circle">2</div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Inisialisasi Windows Runner</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step2Desc">Server virtual Windows GitHub dialokasikan secara gratis</div>
+              </div>
+            </div>
+
+            <div class="pipeline-step">
+              <div class="step-circle" id="step3Circle">3</div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Kompilasi Vite, React & Electron</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step3Desc">Membungkus installer .exe dan membuat latest.yml checksum</div>
+              </div>
+            </div>
+
+            <div class="pipeline-step">
+              <div class="step-circle" id="step4Circle">4</div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Publikasi ke Seluruh Kasir</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step4Desc">Installer terbit di GitHub Releases & auto-updater kasir aktif</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 6px;">
+            <a href="https://github.com/creadia-digitech/c-pos-desktop/actions" target="_blank" class="btn-action-sm" style="flex: 1; justify-content: center; padding: 10px;">
+              Buka Live Console GitHub Actions ↗
+            </a>
+            <a href="https://github.com/creadia-digitech/c-pos-desktop/releases" target="_blank" class="btn-action-sm" style="flex: 1; justify-content: center; padding: 10px;">
+              Buka Halaman Rilis GitHub ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00B894" stroke-width="2.5">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span id="toastMsg" style="font-weight: 700; font-size: 0.85rem;"></span>
+  </div>
+
+  <script>
+    // ── Cryptographic Salt Engine matching C-POS Client ──
+    const MASTER_SALT = 'CPOS_2026_OFFLINE_LICENSE_SECURE_SALT_KEY!#888';
+    const STORAGE_KEY = 'CPOS_MASTER_LICENSE_HISTORY_V2';
+    const TOKEN_KEY = 'CPOS_DEV_GH_TOKEN';
+    const GITHUB_REPO = 'creadia-digitech/c-pos-desktop';
+
+    let currentSelectedType = 'LIFE';
+    let currentGeneratedKey = '';
+    let pollInterval = null;
+
+    // Initialize saved token from browser storage (private to developer laptop)
+    const savedToken = localStorage.getItem(TOKEN_KEY) || '';
+    if (savedToken) {
+      document.getElementById('inputGhToken').value = savedToken;
+    }
+
+    // ── Tab Navigation ──
+    function switchView(tab) {
+      const vLicense = document.getElementById('viewLicense');
+      const vRelease = document.getElementById('viewRelease');
+      const btnLicense = document.getElementById('tabBtnLicense');
+      const btnRelease = document.getElementById('tabBtnRelease');
+
+      if (tab === 'license') {
+        vLicense.style.display = 'flex';
+        vRelease.style.display = 'none';
+        btnLicense.className = 'nav-tab-btn active';
+        btnRelease.className = 'nav-tab-btn';
+      } else {
+        vLicense.style.display = 'none';
+        vRelease.style.display = 'flex';
+        btnLicense.className = 'nav-tab-btn';
+        btnRelease.className = 'nav-tab-btn active release-active';
+        checkGitHubReleaseStatus();
+      }
+    }
+
+    // ── Package Tier Selector ──
+    function selectTier(type) {
+      currentSelectedType = type;
+      ['LIFE', 'YEAR', 'TR07', 'TR14'].forEach((t) => {
+        const card = document.getElementById(`card-${t}`);
+        if (!card) return;
+        card.className = 'tier-card';
+        if (t === type) {
+          card.classList.add('selected');
+          if (t === 'YEAR') card.classList.add('year-selected');
+          else if (t.startsWith('TR')) card.classList.add('trial-selected');
+        }
+      });
+
+      if (document.getElementById('inputHwid').value.trim()) {
+        generateKey();
+      }
+    }
+
+    // ── Paste & Auto-Extract HWID ──
+    async function pasteHwid() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (!text) {
+          showToast('Clipboard kosong.');
+          return;
+        }
+
+        const match = text.match(/CPOS-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+        if (match) {
+          document.getElementById('inputHwid').value = match[0].toUpperCase();
+          showToast('✅ HWID valid terdeteksi & disalin!');
+          generateKey();
+        } else {
+          document.getElementById('inputHwid').value = text.trim();
+          showToast('Teks ditempel dari clipboard.');
+        }
+      } catch (err) {
+        showToast('Izin akses clipboard ditolak browser.');
+      }
+    }
+
+    // ── HMAC-SHA256 Web Crypto Generator ──
+    async function calculateExpectedSerialKey(hwid, type) {
+      const cleanHwid = hwid.trim().toUpperCase();
+      const rawPayload = `${cleanHwid}:${type}:${MASTER_SALT}`;
+      const enc = new TextEncoder();
+      const keyData = enc.encode(MASTER_SALT);
+      const msgData = enc.encode(rawPayload);
+
+      const cryptoKey = await window.crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: { name: 'SHA-256' } },
+        false,
+        ['sign']
+      );
+
+      const signature = await window.crypto.subtle.sign('HMAC', cryptoKey, msgData);
+      const hashArray = Array.from(new Uint8Array(signature));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+      const p1 = hashHex.slice(0, 4);
+      const p2 = hashHex.slice(4, 8);
+      const p3 = hashHex.slice(8, 12);
+
+      return `CPOS-${type}-${p1}-${p2}-${p3}`;
+    }
+
+    async function generateKey() {
+      const rawHwid = document.getElementById('inputHwid').value.trim();
+      if (!rawHwid) {
+        showToast('Silakan isi atau tempel ID HWID terlebih dahulu.');
+        return;
+      }
+
+      const match = rawHwid.match(/CPOS-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+      const cleanHwid = match ? match[0].toUpperCase() : rawHwid.toUpperCase();
+      document.getElementById('inputHwid').value = cleanHwid;
+
+      const storeName = document.getElementById('inputStoreName').value.trim() || 'Toko Kasir';
+      const phone = document.getElementById('inputPhone').value.trim();
+
+      const serialKey = await calculateExpectedSerialKey(cleanHwid, currentSelectedType);
+      currentGeneratedKey = serialKey;
+
+      const keyDisplay = document.getElementById('keyOutputDisplay');
+      keyDisplay.innerText = serialKey;
+      keyDisplay.className = 'key-text';
+
+      let packageLabel = 'LISENSI RESMI PERMANEN (LIFETIME)';
+      if (currentSelectedType === 'YEAR') packageLabel = 'LISENSI RESMI TAHUNAN (1 TAHUN)';
+      else if (currentSelectedType === 'TR07') packageLabel = 'UJI COBA GRATIS (DEMO 7 HARI)';
+      else if (currentSelectedType === 'TR14') packageLabel = 'UJI COBA RESMI (DEMO 14 HARI)';
+
+      const waMsg = `Halo Kak (${storeName}),
+Berikut adalah Serial Key Aktivasi Resmi untuk aplikasi kasir *C-POS Offline Desktop*:
+
+━━━━━━━━━━━━━━━━━━━━━
+🏪 *Nama Toko*  : ${storeName}
+📦 *Paket*       : ${packageLabel}
+💻 *ID Mesin*    : ${cleanHwid}
+🔑 *SERIAL KEY*  : *${serialKey}*
+━━━━━━━━━━━━━━━━━━━━━
+
+*Cara Aktivasi Kasir:*
+1. Buka aplikasi C-POS di komputer kasir Anda.
+2. Salin dan tempel kode *SERIAL KEY* di atas pada kolom aktivasi.
+3. Klik tombol *Aktifkan Lisensi*.
+
+Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima kasih telah menggunakan C-POS Offline Desktop. 🙏`;
+
+      document.getElementById('waPreviewText').value = waMsg;
+
+      let cleanPhone = phone.replace(/[^0-9]/g, '');
+      if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+      const waUrl = cleanPhone
+        ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waMsg)}`
+        : `https://api.whatsapp.com/send?text=${encodeURIComponent(waMsg)}`;
+      document.getElementById('btnWaDirect').href = waUrl;
+
+      saveToHistory({
+        date: new Date().toLocaleString('id-ID'),
+        store: storeName,
+        hwid: cleanHwid,
+        key: serialKey,
+        type: currentSelectedType,
+        phone: cleanPhone || '-'
+      });
+
+      showToast('⚡ Serial Key berhasil dibuat!');
+    }
+
+    async function copySerialKeyOnly() {
+      if (!currentGeneratedKey) {
+        showToast('Belum ada Serial Key yang dibuat.');
+        return;
+      }
+      await navigator.clipboard.writeText(currentGeneratedKey);
+      showToast('🔑 Serial Key berhasil disalin!');
+    }
+
+    async function copyWaText() {
+      const text = document.getElementById('waPreviewText').value;
+      if (!text) {
+        showToast('Belum ada pesan yang dibuat.');
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      showToast('💬 Pesan WhatsApp lengkap berhasil disalin!');
+    }
+
+    function openWhatsAppDirect() {
+      const text = document.getElementById('waPreviewText').value;
+      if (!text) {
+        alert('Silakan buat Serial Key terlebih dahulu.');
+        return;
+      }
+      const href = document.getElementById('btnWaDirect').href;
+      window.open(href, '_blank');
+    }
+
+    // ── History Management ──
+    function getHistory() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveToHistory(item) {
+      const list = getHistory();
+      list.unshift(item);
+      if (list.length > 50) list.pop();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const list = getHistory();
+      const tbody = document.getElementById('historyBody');
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-sub); padding: 28px;">Belum ada riwayat pembuatan Serial Key.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map((item) => {
+        let badgeClass = 'badge-life';
+        if (item.type === 'YEAR') badgeClass = 'badge-year';
+        else if (item.type && item.type.startsWith('TR')) badgeClass = 'badge-trial';
+
+        return `
+          <tr>
+            <td style="font-size: 0.72rem; color: var(--text-sub);">${item.date}</td>
+            <td><strong>${item.store}</strong></td>
+            <td style="font-family: var(--font-mono); color: #38BDF8; font-weight: 700;">${item.hwid}</td>
+            <td style="font-family: var(--font-mono); font-weight: 800; color: #FFF;">${item.key}</td>
+            <td><span class="${badgeClass}">${item.type}</span></td>
+            <td>
+              <button class="btn-action-sm" onclick="copyItemKey('${item.key}')">Salin</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function copyItemKey(key) {
+      await navigator.clipboard.writeText(key);
+      showToast('Serial Key disalin: ' + key);
+    }
+
+    function clearHistory() {
+      if (confirm('Yakin ingin menghapus seluruh riwayat pembuatan lisensi?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHistory();
+        showToast('Riwayat berhasil dihapus.');
+      }
+    }
+
+    function exportCsv() {
+      const list = getHistory();
+      if (list.length === 0) {
+        alert('Belum ada data riwayat untuk diekspor.');
+        return;
+      }
+      const headers = ['Waktu', 'Nama Toko', 'HWID', 'Serial Key', 'Tipe', 'No HP'];
+      const rows = list.map(i => [
+        `"${i.date}"`,
+        `"${i.store.replace(/"/g, '""')}"`,
+        `"${i.hwid}"`,
+        `"${i.key}"`,
+        `"${i.type}"`,
+        `"${i.phone}"`
+      ]);
+      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `cpos-lisensi-${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // ── Cloud Release Engine (GitHub Actions Integration) ──
+    function toggleTokenVisibility() {
+      const input = document.getElementById('inputGhToken');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    async function checkGitHubReleaseStatus() {
+      const token = document.getElementById('inputGhToken').value.trim();
+      localStorage.setItem(TOKEN_KEY, token);
+
+      try {
+        const headers = { 'Accept': 'application/vnd.github.v3+json' };
+        if (token) headers['Authorization'] = `token ${token}`;
+
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('ghLatestVersion').innerText = data.tag_name || data.name || 'v1.0.0';
+          
+          let dlCount = 0;
+          if (Array.isArray(data.assets)) {
+            data.assets.forEach(a => dlCount += (a.download_count || 0));
+          }
+          document.getElementById('ghTotalDownloads').innerText = dlCount;
+          showToast('Status GitHub tersinkronisasi live!');
+        } else if (res.status === 404) {
+          document.getElementById('ghLatestVersion').innerText = 'Belum ada rilis';
+          document.getElementById('ghTotalDownloads').innerText = '0';
+        }
+      } catch (e) {
+        console.log('GitHub fetch notice:', e);
+      }
+    }
+
+    async function triggerCloudBuild() {
+      const token = document.getElementById('inputGhToken').value.trim();
+      const version = document.getElementById('inputReleaseVersion').value.trim();
+      const notes = document.getElementById('inputChangelog').value.trim() || 'Pembaruan resmi performa dan kestabilan C-POS.';
+
+      if (!token) {
+        alert('Token GitHub diperlukan untuk memicu build otomatis di cloud.');
+        return;
+      }
+      if (!version) {
+        alert('Nomor versi rilis wajib diisi (misal: 1.0.1).');
+        return;
+      }
+
+      localStorage.setItem(TOKEN_KEY, token);
+
+      const btn = document.getElementById('btnTriggerRelease');
+      btn.disabled = true;
+      btn.innerText = 'Mengirim Perintah ke Cloud GitHub...';
+
+      setPipelineStep(1, 'active');
+
+      try {
+        // Trigger workflow_dispatch event
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/release.yml/dispatches`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/vnd.github.v3+json',
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ref: 'main',
+            inputs: {
+              version: version,
+              release_notes: notes,
+            }
+          })
+        });
+
+        if (res.ok || res.status === 204) {
+          showToast(`🚀 Build cloud v${version} berhasil dipicu di GitHub Actions!`);
+          setPipelineStep(1, 'done');
+          setPipelineStep(2, 'active');
+          document.getElementById('ghWorkflowStatus').innerText = `Kompilasi v${version}...`;
+          document.getElementById('trackerBadge').innerText = 'Sedang Berjalan';
+          document.getElementById('trackerBadge').style.color = '#3B82F6';
+
+          startLivePolling(token, version);
+        } else {
+          const err = await res.json().catch(() => ({}));
+          alert(`Gagal memicu GitHub Actions: ${err.message || res.statusText}\nPastikan file .github/workflows/release.yml sudah ada di branch main.`);
+          resetPipeline();
+        }
+      } catch (e) {
+        alert(`Kesalahan jaringan: ${e.message}`);
+        resetPipeline();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+          </svg>
+          <span>🚀 Mulai Kompilasi & Publikasi Cloud GitHub</span>
+        `;
+      }
+    }
+
+    function setPipelineStep(step, state) {
+      const circle = document.getElementById(`step${step}Circle`);
+      if (!circle) return;
+      circle.className = `step-circle ${state}`;
+      if (state === 'done') circle.innerHTML = '✓';
+    }
+
+    function resetPipeline() {
+      for (let i = 1; i <= 4; i++) {
+        const circle = document.getElementById(`step${i}Circle`);
+        if (circle) {
+          circle.className = 'step-circle';
+          circle.innerHTML = i;
+        }
+      }
+      document.getElementById('trackerBadge').innerText = 'Menunggu';
+      document.getElementById('trackerBadge').style.color = '#CBD5E1';
+    }
+
+    function startLivePolling(token, version) {
+      if (pollInterval) clearInterval(pollInterval);
+      let attempts = 0;
+
+      pollInterval = setInterval(async () => {
+        attempts++;
+        try {
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': `token ${token}`,
+            }
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            const latestRun = data.workflow_runs?.[0];
+            if (latestRun) {
+              if (latestRun.status === 'in_progress') {
+                setPipelineStep(2, 'done');
+                setPipelineStep(3, 'active');
+                document.getElementById('trackerBadge').innerText = 'Membungkus .EXE...';
+              } else if (latestRun.status === 'completed') {
+                clearInterval(pollInterval);
+                if (latestRun.conclusion === 'success') {
+                  setPipelineStep(3, 'done');
+                  setPipelineStep(4, 'done');
+                  document.getElementById('trackerBadge').innerText = 'Sukses Terbit!';
+                  document.getElementById('trackerBadge').style.color = '#10B981';
+                  document.getElementById('ghLatestVersion').innerText = `v${version}`;
+                  document.getElementById('ghWorkflowStatus').innerText = 'Sukses';
+                  showToast(`🎉 Versi v${version} telah berhasil dipublikasikan ke seluruh kasir!`);
+                } else {
+                  document.getElementById('trackerBadge').innerText = 'Gagal';
+                  document.getElementById('trackerBadge').style.color = '#EF4444';
+                  alert('Proses rilis GitHub Actions selesai dengan kegagalan. Silakan periksa tab Actions di GitHub.');
+                }
+              }
+            }
+          }
+        } catch (e) {}
+
+        if (attempts > 60) clearInterval(pollInterval); // Stop polling after 10 mins
+      }, 10000);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Initial load
+    renderHistory();
+    checkGitHubReleaseStatus();
+  </script>
+</body>
+</html>
