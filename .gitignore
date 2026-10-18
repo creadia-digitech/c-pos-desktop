@@ -14,6 +14,11 @@ release/
 *token*
 *.txt
 
+# Proprietary License Generators & Admin Hub
+generator-lisensi.html
+scripts/generate-license.cjs
+release/generator-lisensi.html
+
 # OS files
 Thumbs.db
 .DS_Store
