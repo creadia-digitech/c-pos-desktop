@@ -6,27 +6,32 @@
   <title>C-POS — Master Developer & License Command Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #080C16;
-      --surface: #0F172A;
-      --surface-card: rgba(16, 24, 40, 0.72);
-      --surface-card-hover: rgba(22, 33, 56, 0.85);
-      --border: rgba(255, 255, 255, 0.1);
-      --border-focus: rgba(0, 184, 148, 0.55);
-      --primary: #00B894;
-      --primary-glow: rgba(0, 184, 148, 0.35);
+      --bg: #070A12;
+      --surface: #0E1424;
+      --surface-card: rgba(14, 20, 36, 0.78);
+      --surface-card-hover: rgba(20, 29, 52, 0.9);
+      --surface-input: rgba(6, 10, 20, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --border-focus: rgba(0, 229, 153, 0.5);
+      --primary: #00E599;
+      --primary-glow: rgba(0, 229, 153, 0.25);
       --blue: #3B82F6;
-      --blue-glow: rgba(59, 130, 246, 0.35);
+      --blue-glow: rgba(59, 130, 246, 0.3);
       --amber: #F59E0B;
-      --amber-glow: rgba(245, 158, 11, 0.35);
+      --amber-glow: rgba(245, 158, 11, 0.25);
       --purple: #8B5CF6;
       --text: #F8FAFC;
       --text-muted: #94A3B8;
       --text-sub: #64748B;
       --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', Consolas, monospace;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 9px;
     }
 
     * {
@@ -45,39 +50,39 @@
       flex-direction: column;
       position: relative;
       overflow-x: hidden;
-      padding: 24px 16px 60px 16px;
+      padding: 24px 20px 60px 20px;
       line-height: 1.5;
     }
 
     /* Ambient Luxury Mesh Glows matching C-POS backdrop */
     .mesh-glow-1 {
       position: fixed;
-      top: -200px;
-      left: 10%;
-      width: 600px;
-      height: 600px;
+      top: -220px;
+      left: 8%;
+      width: 650px;
+      height: 650px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 184, 148, 0.14) 0%, transparent 68%);
-      filter: blur(90px);
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.11) 0%, transparent 68%);
+      filter: blur(100px);
       pointer-events: none;
       z-index: 0;
     }
 
     .mesh-glow-2 {
       position: fixed;
-      bottom: -150px;
+      bottom: -180px;
       right: 5%;
-      width: 650px;
-      height: 650px;
+      width: 700px;
+      height: 700px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%);
-      filter: blur(100px);
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.06) 50%, transparent 70%);
+      filter: blur(120px);
       pointer-events: none;
       z-index: 0;
     }
 
     .container {
-      max-width: 1080px;
+      max-width: 1100px;
       margin: 0 auto;
       width: 100%;
       position: relative;
@@ -87,19 +92,19 @@
       gap: 20px;
     }
 
-    /* Header Navbar */
+    /* ── Header Navbar ── */
     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      padding: 16px 24px;
-      border-radius: 20px;
+      padding: 14px 22px;
+      border-radius: var(--radius-lg);
       background: var(--surface-card);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(28px);
       border: 1px solid var(--border);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px rgba(0, 0, 0, 0.45);
     }
 
     .brand-wrap {
@@ -109,39 +114,39 @@
     }
 
     .brand-logo {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
-      background: rgba(0, 184, 148, 0.12);
-      border: 1px solid rgba(0, 184, 148, 0.3);
+      background: linear-gradient(135deg, rgba(0, 229, 153, 0.15) 0%, rgba(59, 130, 246, 0.12) 100%);
+      border: 1px solid rgba(0, 229, 153, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(0, 184, 148, 0.2);
+      box-shadow: 0 4px 16px rgba(0, 229, 153, 0.2);
     }
 
     .brand-text h1 {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: #FFF;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
     }
 
     .brand-badge {
       font-size: 0.62rem;
       font-weight: 800;
       padding: 2px 7px;
-      border-radius: 8px;
-      background: rgba(0, 184, 148, 0.15);
+      border-radius: 6px;
+      background: rgba(0, 229, 153, 0.12);
       color: var(--primary);
-      border: 1px solid rgba(0, 184, 148, 0.3);
+      border: 1px solid rgba(0, 229, 153, 0.25);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .brand-text p {
@@ -150,23 +155,23 @@
       margin-top: 1px;
     }
 
-    /* Tab Switcher Controls */
+    /* ── Precision Segmented Tabs ── */
     .nav-tabs {
       display: flex;
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(0, 0, 0, 0.5);
       padding: 4px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
       gap: 4px;
     }
 
     .nav-tab-btn {
       padding: 8px 16px;
-      border-radius: 10px;
-      border: none;
+      border-radius: 9px;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -181,32 +186,35 @@
     }
 
     .nav-tab-btn.active {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
       color: #FFF;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
     }
 
     .nav-tab-btn.active.release-active {
-      background: rgba(59, 130, 246, 0.2);
+      background: rgba(59, 130, 246, 0.18);
       color: #93C5FD;
-      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-color: rgba(59, 130, 246, 0.35);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
     }
 
     .tab-badge {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 800;
       padding: 1px 6px;
-      border-radius: 6px;
+      border-radius: 5px;
       background: #3B82F6;
       color: #FFF;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    /* Main Grid */
+    /* ── Main Layout Grids ── */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 18px;
     }
 
     @media (max-width: 900px) {
@@ -215,18 +223,23 @@
       }
     }
 
-    /* Glass Cards */
+    /* ── Precision Glass Cards ── */
     .card {
       background: var(--surface-card);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(28px);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
+      border-radius: var(--radius-lg);
+      padding: 22px;
       display: flex;
       flex-direction: column;
       gap: 18px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 40px rgba(0, 0, 0, 0.45);
       position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
     }
 
     .card-header {
@@ -238,7 +251,7 @@
     }
 
     .card-title {
-      font-size: 0.94rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: #FFF;
       display: flex;
@@ -247,21 +260,17 @@
       letter-spacing: -0.01em;
     }
 
-    .card-title svg {
-      color: var(--primary);
-    }
-
     .card-step {
       font-size: 0.68rem;
       font-weight: 800;
       color: var(--primary);
-      background: rgba(0, 184, 148, 0.12);
-      padding: 3px 8px;
-      border-radius: 8px;
-      border: 1px solid rgba(0, 184, 148, 0.25);
+      background: rgba(0, 229, 153, 0.1);
+      padding: 3px 9px;
+      border-radius: 7px;
+      border: 1px solid rgba(0, 229, 153, 0.22);
     }
 
-    /* Form Elements */
+    /* ── Form Inputs with Zero Collision ── */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -269,7 +278,7 @@
     }
 
     .form-label {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: #CBD5E1;
       display: flex;
@@ -281,16 +290,17 @@
       position: relative;
       display: flex;
       align-items: center;
+      width: 100%;
     }
 
     .form-input {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.45);
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--surface-input);
       color: #FFF;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 600;
       outline: none;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -298,82 +308,122 @@
 
     .form-input:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.2);
-      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.18);
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .form-input.focus-blue:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
 
     .form-input.mono {
       font-family: var(--font-mono);
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.06em;
-      font-size: 0.98rem;
+      font-size: 0.94rem;
       color: #38BDF8;
     }
 
-    .btn-paste {
+    /* Safe padded input so text NEVER overlaps button */
+    .form-input.has-action-btn {
+      padding-right: 120px !important;
+    }
+
+    .btn-input-action {
       position: absolute;
-      right: 8px;
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      right: 6px;
+      padding: 5px 11px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.08);
       color: #E2E8F0;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 5px;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
 
-    .btn-paste:hover {
+    .btn-input-action:hover {
       background: rgba(255, 255, 255, 0.15);
       color: #FFF;
+      border-color: rgba(255, 255, 255, 0.22);
     }
 
-    /* Interactive 4-Tier License Radio Cards */
+    /* ── Quick Chips ── */
+    .chip-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .chip-btn {
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    /* ── 4-Tier License Radio Cards ── */
     .tier-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 9px;
     }
 
     .tier-card {
       position: relative;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 13px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
       background: rgba(0, 0, 0, 0.35);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
     .tier-card:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.03);
       transform: translateY(-1px);
     }
 
     .tier-card.selected {
       border-color: var(--primary);
-      background: rgba(0, 184, 148, 0.1);
-      box-shadow: 0 0 20px rgba(0, 184, 148, 0.2);
+      background: rgba(0, 229, 153, 0.08);
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.18);
     }
 
     .tier-card.selected.year-selected {
       border-color: var(--blue);
-      background: rgba(59, 130, 246, 0.1);
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+      background: rgba(59, 130, 246, 0.08);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.18);
     }
 
     .tier-card.selected.trial-selected {
       border-color: var(--amber);
-      background: rgba(245, 158, 11, 0.1);
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+      background: rgba(245, 158, 11, 0.08);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.18);
     }
 
     .tier-header {
@@ -383,111 +433,118 @@
     }
 
     .tier-title {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: #FFF;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .tier-tag {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 800;
       padding: 2px 6px;
-      border-radius: 6px;
+      border-radius: 5px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
 
-    .tag-life { background: rgba(0, 184, 148, 0.2); color: #00B894; }
-    .tag-year { background: rgba(59, 130, 246, 0.2); color: #60A5FA; }
-    .tag-trial { background: rgba(245, 158, 11, 0.2); color: #F59E0B; }
+    .tag-life { background: rgba(0, 229, 153, 0.16); color: #00E599; }
+    .tag-year { background: rgba(59, 130, 246, 0.16); color: #60A5FA; }
+    .tag-trial { background: rgba(245, 158, 11, 0.16); color: #F59E0B; }
 
     .tier-desc {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       line-height: 1.35;
     }
 
-    /* Action Buttons */
+    /* ── High-Impact Action Buttons ── */
     .btn-primary {
       width: 100%;
-      padding: 14px 20px;
-      border-radius: 14px;
+      padding: 13px 20px;
+      border-radius: 12px;
       border: none;
-      background: #00B894;
-      background-image: linear-gradient(135deg, #00B894 0%, #009B7D 100%);
-      color: #080C16;
-      font-size: 0.92rem;
+      background: #00E599;
+      background-image: linear-gradient(135deg, #00E599 0%, #00B87A 100%);
+      color: #070A12;
+      font-size: 0.88rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      box-shadow: 0 8px 24px rgba(0, 184, 148, 0.35);
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(0, 229, 153, 0.35);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(0, 184, 148, 0.5);
-      filter: brightness(1.08);
+      box-shadow: 0 10px 26px rgba(0, 229, 153, 0.48);
+      filter: brightness(1.06);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
     }
 
     .btn-blue {
       background: #3B82F6;
       background-image: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
       color: #FFF;
-      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
     }
 
     .btn-blue:hover {
-      box-shadow: 0 12px 28px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 10px 26px rgba(59, 130, 246, 0.48);
     }
 
-    /* Output Section */
+    /* ── Output Box & Key Glow ── */
     .output-card {
-      border: 1px solid rgba(0, 184, 148, 0.35);
-      background: radial-gradient(circle at top, rgba(0, 184, 148, 0.08) 0%, rgba(15, 23, 42, 0.7) 100%);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      background: radial-gradient(circle at top right, rgba(0, 229, 153, 0.08) 0%, rgba(14, 20, 36, 0.8) 100%);
     }
 
     .key-display-box {
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(0, 184, 148, 0.4);
-      border-radius: 14px;
+      background: rgba(4, 7, 15, 0.7);
+      border: 1px solid rgba(0, 229, 153, 0.35);
+      border-radius: var(--radius-md);
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 0 25px rgba(0, 184, 148, 0.15) inset;
+      gap: 9px;
+      box-shadow: inset 0 0 25px rgba(0, 229, 153, 0.1);
     }
 
     .key-text {
       font-family: var(--font-mono);
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       font-weight: 800;
-      color: #00B894;
+      color: #00E599;
       text-align: center;
-      letter-spacing: 0.12em;
-      text-shadow: 0 0 12px rgba(0, 184, 148, 0.6);
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 14px rgba(0, 229, 153, 0.55);
       word-break: break-all;
     }
 
     .key-text.empty {
       color: var(--text-sub);
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       letter-spacing: 0.02em;
       text-shadow: none;
     }
 
     .wa-preview-box {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      border-radius: 11px;
       padding: 12px 14px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: #CBD5E1;
       white-space: pre-wrap;
       max-height: 140px;
@@ -495,7 +552,118 @@
       line-height: 1.5;
     }
 
-    /* History Table */
+    /* ── Repository Live Banner ── */
+    .repo-banner-card {
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08) 0%, rgba(14, 20, 36, 0.8) 100%);
+    }
+
+    .release-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .release-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat-pill {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-md);
+      padding: 12px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .stat-pill:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #FFF;
+    }
+
+    /* ── Pipeline Stepper with Connector Line ── */
+    .pipeline-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 15px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+    }
+
+    .pipeline-step.step-active {
+      border-color: rgba(59, 130, 246, 0.4);
+      background: rgba(59, 130, 246, 0.08);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
+    }
+
+    .pipeline-step.step-done {
+      border-color: rgba(0, 229, 153, 0.25);
+      background: rgba(0, 229, 153, 0.05);
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .step-circle.active {
+      background: #3B82F6;
+      color: #FFF;
+      box-shadow: 0 0 14px #3B82F6;
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+
+    .step-circle.done {
+      background: #00E599;
+      color: #070A12;
+      box-shadow: 0 0 10px rgba(0, 229, 153, 0.5);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.8; }
+    }
+
+    /* ── History Table ── */
     .history-card {
       grid-column: 1 / -1;
     }
@@ -514,112 +682,62 @@
 
     th {
       padding: 10px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       letter-spacing: 0.05em;
     }
 
     td {
       padding: 12px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text);
     }
 
     tr:hover td {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.025);
     }
 
-    .badge-life { color: #00B894; background: rgba(0, 184, 148, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
-    .badge-year { color: #60A5FA; background: rgba(59, 130, 246, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
-    .badge-trial { color: #F59E0B; background: rgba(245, 158, 11, 0.15); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+    .badge-life { color: #00E599; background: rgba(0, 229, 153, 0.12); border: 1px solid rgba(0, 229, 153, 0.25); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+    .badge-year { color: #60A5FA; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
+    .badge-trial { color: #F59E0B; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 0.68rem; }
 
-    /* Cloud Release Hub Styles */
-    .release-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    @media (max-width: 768px) {
-      .release-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .stat-pill {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .stat-label {
-      font-size: 0.68rem;
+    /* Secondary Buttons */
+    .btn-action-sm {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: #CBD5E1;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .stat-val {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #FFF;
-    }
-
-    .pipeline-step {
-      display: flex;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 5px;
+      transition: all 0.15s ease;
+      text-decoration: none;
     }
 
-    .step-circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.76rem;
-      font-weight: 800;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-
-    .step-circle.active {
-      background: #3B82F6;
+    .btn-action-sm:hover {
+      background: rgba(255, 255, 255, 0.12);
       color: #FFF;
-      box-shadow: 0 0 12px #3B82F6;
-      animation: pulse 1.5s infinite;
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
-    .step-circle.done {
-      background: #10B981;
-      color: #FFF;
-    }
-
-    /* Toast */
+    /* ── Toast Notification ── */
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: #0F172A;
+      background: #0E1424;
       color: #FFF;
       padding: 12px 20px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      border: 1px solid var(--border-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 229, 153, 0.15);
       z-index: 9999;
       opacity: 0;
       transform: translateY(15px);
@@ -634,26 +752,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-
-    .btn-action-sm {
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
-      color: #CBD5E1;
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.15s ease;
-    }
-
-    .btn-action-sm:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #FFF;
-    }
   </style>
 </head>
 <body>
@@ -665,10 +763,10 @@
     <header class="navbar">
       <div class="brand-wrap">
         <div class="brand-logo">
-          <svg viewBox="0 0 40 40" width="30" height="30" fill="none">
-            <circle cx="20" cy="20" r="18" stroke="#00B894" stroke-width="2.5" stroke-dasharray="4 2"/>
+          <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="#00E599" stroke-width="2.5" stroke-dasharray="4 2"/>
             <path d="M25 15C23.8 13.5 21.8 12.5 19.5 12.5C15.35 12.5 12 15.85 12 20C12 24.15 15.35 27.5 19.5 27.5C22.2 27.5 24.5 26.1 25.5 24" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="26" cy="20" r="3" fill="#00B894"/>
+            <circle cx="26" cy="20" r="3" fill="#00E599"/>
           </svg>
         </div>
         <div class="brand-text">
@@ -680,7 +778,7 @@
         </div>
       </div>
 
-      <!-- Tab Switcher -->
+      <!-- Segmented Tab Switcher -->
       <div class="nav-tabs">
         <button class="nav-tab-btn active" id="tabBtnLicense" onclick="switchView('license')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -718,7 +816,7 @@
             <span class="card-step">Langkah 1</span>
           </div>
 
-          <!-- HWID Input -->
+          <!-- HWID Input with Padded Safe Zone -->
           <div class="form-group">
             <label class="form-label">
               <span>ID Perangkat Komputer (HWID) *</span>
@@ -728,11 +826,11 @@
               <input
                 type="text"
                 id="inputHwid"
-                class="form-input mono"
+                class="form-input mono has-action-btn"
                 placeholder="Tempel HWID (misal: CPOS-4F8E-903D-4844)"
                 autofocus
               />
-              <button type="button" class="btn-paste" onclick="pasteHwid()">
+              <button type="button" class="btn-input-action" onclick="pasteHwid()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -764,7 +862,7 @@
                   <span class="tier-title">⭐ LIFETIME</span>
                   <span class="tier-tag tag-life">Permanen</span>
                 </div>
-                <div class="tier-desc">Aktivasi seumur hidup, tanpa biaya bulanan / tahunan.</div>
+                <div class="tier-desc">Aktivasi seumur hidup, tanpa batas transaksi / waktu.</div>
               </div>
 
               <!-- Tier 2: 1 Tahun -->
@@ -782,7 +880,7 @@
                   <span class="tier-title">🚀 DEMO 7 HARI</span>
                   <span class="tier-tag tag-trial">Gratis</span>
                 </div>
-                <div class="tier-desc">Uji coba gratis 7 hari, batas 50 transaksi kasir.</div>
+                <div class="tier-desc">Uji coba gratis 7 hari, batas maksimal 50 transaksi.</div>
               </div>
 
               <!-- Tier 4: Demo 14 Hari -->
@@ -791,16 +889,16 @@
                   <span class="tier-title">⏳ DEMO 14 HARI</span>
                   <span class="tier-tag tag-trial">Trial Plus</span>
                 </div>
-                <div class="tier-desc">Uji coba 14 hari penuh, batas 100 transaksi kasir.</div>
+                <div class="tier-desc">Uji coba 14 hari penuh, batas maksimal 100 transaksi.</div>
               </div>
             </div>
           </div>
 
           <button type="button" class="btn-primary" onclick="generateKey()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
-            <span>Kalkulasi & Buat Serial Key HMAC-SHA256</span>
+            <span>Kalkulasi & Terbitkan Serial Key HMAC-SHA256</span>
           </button>
         </div>
 
@@ -813,19 +911,19 @@
               </svg>
               <span>Serial Key & Notifikasi WhatsApp</span>
             </div>
-            <span class="card-step" style="background: rgba(0, 184, 148, 0.15); color: #00B894;">Langkah 2</span>
+            <span class="card-step" style="background: rgba(0, 229, 153, 0.12); color: #00E599;">Langkah 2</span>
           </div>
 
           <!-- Luminous Serial Key Box -->
           <div class="key-display-box">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+              <span style="font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
                 Serial Key Aktivasi Resmi
               </span>
               <button class="btn-action-sm" onclick="copySerialKeyOnly()">Salin Key Saja</button>
             </div>
             <div class="key-text empty" id="keyOutputDisplay">
-              [ Klik tombol 'Kalkulasi & Buat Serial Key' ]
+              [ Klik tombol 'Kalkulasi & Terbitkan Serial Key' ]
             </div>
           </div>
 
@@ -867,7 +965,7 @@
           <table>
             <thead>
               <tr>
-                <th>Tanggal</th>
+                <th>Waktu</th>
                 <th>Nama Toko</th>
                 <th>HWID Mesin</th>
                 <th>Serial Key Diterbitkan</th>
@@ -885,8 +983,8 @@
 
     <!-- ════════ VIEW 2: CLOUD RELEASE & AUTO-UPDATE HUB ════════ -->
     <div id="viewRelease" style="display: none; flex-direction: column; gap: 20px;">
-      <!-- Repository Overview Card -->
-      <div class="card">
+      <!-- Repository Live Banner Card -->
+      <div class="card repo-banner-card">
         <div class="card-header">
           <div class="card-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
@@ -894,7 +992,7 @@
             </svg>
             <span>Koneksi Repository Rilis GitHub</span>
           </div>
-          <button class="btn-action-sm" onclick="checkGitHubReleaseStatus()">
+          <button class="btn-action-sm" onclick="checkGitHubReleaseStatus()" id="btnSyncStatus">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             <span>Sinkronkan Status Live</span>
           </button>
@@ -903,29 +1001,31 @@
         <div class="release-stats-grid">
           <div class="stat-pill">
             <span class="stat-label">Repository GitHub</span>
-            <span class="stat-val" style="font-size: 0.92rem; color: #60A5FA;">creadia-digitech/c-pos-desktop</span>
+            <span class="stat-val" style="font-size: 0.9rem; color: #60A5FA; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              creadia-digitech/c-pos-desktop
+            </span>
           </div>
 
           <div class="stat-pill">
-            <span class="stat-label">Versi Publikasi Terakhir</span>
-            <span class="stat-val" id="ghLatestVersion" style="color: #10B981;">v1.0.0</span>
+            <span class="stat-label">Versi Aktif di Kasir</span>
+            <span class="stat-val" id="ghLatestVersion" style="color: #00E599;">v1.0.1</span>
           </div>
 
           <div class="stat-pill">
             <span class="stat-label">Status Cloud Runner</span>
-            <span class="stat-val" id="ghWorkflowStatus" style="font-size: 0.92rem; color: #CBD5E1;">Siap Siaga (Idle)</span>
+            <span class="stat-val" id="ghWorkflowStatus" style="font-size: 0.88rem; color: #CBD5E1;">Siap Siaga (Idle)</span>
           </div>
 
           <div class="stat-pill">
             <span class="stat-label">Total Unduhan Kasir</span>
-            <span class="stat-val" id="ghTotalDownloads" style="color: #F59E0B;">0</span>
+            <span class="stat-val" id="ghTotalDownloads" style="color: #F59E0B;">0 Unduhan</span>
           </div>
         </div>
       </div>
 
-      <!-- Cloud Trigger Form Grid -->
+      <!-- Cloud Trigger & Pipeline Grid -->
       <div class="grid">
-        <!-- Form Trigger -->
+        <!-- Form Trigger Card -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">
@@ -934,30 +1034,56 @@
               </svg>
               <span>Trigger Rilis Pembaruan Otomatis</span>
             </div>
-            <span class="card-step" style="background: rgba(59, 130, 246, 0.15); color: #60A5FA;">GitHub Cloud</span>
+            <span class="card-step" style="background: rgba(59, 130, 246, 0.14); color: #60A5FA;">GitHub Actions</span>
           </div>
 
+          <!-- Version Input & Chips -->
           <div class="form-group">
             <label class="form-label">
               <span>Nomor Versi Rilis Baru *</span>
-              <span style="font-size: 0.68rem; color: var(--text-sub);">Format Semantic (X.Y.Z)</span>
+              <span style="font-size: 0.68rem; color: var(--text-sub);">Semantic Versioning (X.Y.Z)</span>
             </label>
-            <input type="text" id="inputReleaseVersion" class="form-input mono" placeholder="1.0.1" value="1.0.1" />
+            <input type="text" id="inputReleaseVersion" class="form-input mono focus-blue" placeholder="1.0.2" value="1.0.2" />
+            <div class="chip-wrap">
+              <span style="font-size: 0.66rem; color: var(--text-sub); font-weight: 700;">Saran Cepat:</span>
+              <button type="button" class="chip-btn" onclick="setVersionQuick('patch')">+ Patch (1.0.2)</button>
+              <button type="button" class="chip-btn" onclick="setVersionQuick('minor')">+ Minor (1.1.0)</button>
+              <button type="button" class="chip-btn" onclick="setVersionQuick('major')">+ Major (2.0.0)</button>
+            </div>
           </div>
 
+          <!-- Changelog Textarea & Templates -->
           <div class="form-group">
-            <label class="form-label">Catatan Pembaruan (Changelog)</label>
-            <textarea id="inputChangelog" class="form-input" rows="3" placeholder="Contoh: Peningkatan kestabilan cetak printer thermal 58mm, perbaikan kalkulasi diskon grosir, dan pembaruan antarmuka kasir."></textarea>
+            <label class="form-label">Catatan Pembaruan (Changelog Kasir)</label>
+            <textarea id="inputChangelog" class="form-input focus-blue" rows="3" placeholder="Contoh: Peningkatan performa cetak thermal 58mm, perbaikan kalkulasi diskon grosir, dan penambahan laporan laba kotor."></textarea>
+            <div class="chip-wrap">
+              <span style="font-size: 0.66rem; color: var(--text-sub); font-weight: 700;">Template:</span>
+              <button type="button" class="chip-btn" onclick="insertChangelogTemplate('thermal')">🖨️ Fix Cetak Thermal</button>
+              <button type="button" class="chip-btn" onclick="insertChangelogTemplate('perf')">⚡ Optimasi & Stabilitas</button>
+              <button type="button" class="chip-btn" onclick="insertChangelogTemplate('feature')">✨ Fitur Baru Kasir</button>
+            </div>
           </div>
 
+          <!-- Token Input with Safe Padding & Toggle -->
           <div class="form-group">
             <label class="form-label">
-              <span>Token Rahasia GitHub Developer</span>
-              <span style="font-size: 0.68rem; color: #10B981;">Tersimpan Aman di Laptop</span>
+              <span>Token Izin GitHub Developer</span>
+              <span style="font-size: 0.68rem; color: #00E599; font-weight: 700;">● Tersimpan di LocalStorage</span>
             </label>
             <div class="form-input-wrap">
-              <input type="password" id="inputGhToken" class="form-input mono" placeholder="ghp_••••••••••••••••••••••••••••••••••••" />
-              <button type="button" class="btn-paste" onclick="toggleTokenVisibility()">Lihat / Sembunyi</button>
+              <input
+                type="password"
+                id="inputGhToken"
+                class="form-input mono focus-blue has-action-btn"
+                placeholder="ghp_••••••••••••••••••••••••••••••••••••"
+              />
+              <button type="button" class="btn-input-action" onclick="toggleTokenVisibility()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span id="btnToggleTokenText">Lihat Token</span>
+              </button>
             </div>
           </div>
 
@@ -966,63 +1092,63 @@
               <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
               <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
             </svg>
-            <span>🚀 Mulai Kompilasi & Publikasi Cloud GitHub</span>
+            <span>🚀 Luncurkan Cloud Build & Rilis ke GitHub</span>
           </button>
         </div>
 
-        <!-- Live Pipeline Monitor -->
+        <!-- Live Pipeline Monitor Card -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00E599" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 14 14"></polyline>
               </svg>
-              <span>Live Cloud Build Tracker</span>
+              <span>Live Cloud Build Pipeline</span>
             </div>
-            <span id="trackerBadge" class="card-step" style="background: rgba(255, 255, 255, 0.08); color: #CBD5E1;">Menunggu</span>
+            <span id="trackerBadge" class="card-step" style="background: rgba(255, 255, 255, 0.08); color: #CBD5E1;">Siap Siaga</span>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="pipeline-step">
+          <div class="pipeline-wrapper">
+            <div class="pipeline-step" id="step1Row">
               <div class="step-circle" id="step1Circle">1</div>
               <div>
-                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Trigger Cloud Dispatch</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step1Desc">Mengirim perintah rilis terenkripsi ke GitHub Actions API</div>
+                <div style="font-weight: 800; font-size: 0.82rem; color: #FFF;">Trigger Cloud Dispatch</div>
+                <div style="font-size: 0.71rem; color: var(--text-muted);" id="step1Desc">Mengirim perintah rilis terenkripsi ke GitHub Actions API</div>
               </div>
             </div>
 
-            <div class="pipeline-step">
+            <div class="pipeline-step" id="step2Row">
               <div class="step-circle" id="step2Circle">2</div>
               <div>
-                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Inisialisasi Windows Runner</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step2Desc">Server virtual Windows GitHub dialokasikan secara gratis</div>
+                <div style="font-weight: 800; font-size: 0.82rem; color: #FFF;">Inisialisasi Windows Runner</div>
+                <div style="font-size: 0.71rem; color: var(--text-muted);" id="step2Desc">Server virtual Windows Microsoft dialokasikan di awan</div>
               </div>
             </div>
 
-            <div class="pipeline-step">
+            <div class="pipeline-step" id="step3Row">
               <div class="step-circle" id="step3Circle">3</div>
               <div>
-                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Kompilasi Vite, React & Electron</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step3Desc">Membungkus installer .exe dan membuat latest.yml checksum</div>
+                <div style="font-weight: 800; font-size: 0.82rem; color: #FFF;">Kompilasi Vite, React & Electron</div>
+                <div style="font-size: 0.71rem; color: var(--text-muted);" id="step3Desc">Membungkus installer .exe dan membuat sensor latest.yml</div>
               </div>
             </div>
 
-            <div class="pipeline-step">
+            <div class="pipeline-step" id="step4Row">
               <div class="step-circle" id="step4Circle">4</div>
               <div>
-                <div style="font-weight: 800; font-size: 0.84rem; color: #FFF;">Publikasi ke Seluruh Kasir</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);" id="step4Desc">Installer terbit di GitHub Releases & auto-updater kasir aktif</div>
+                <div style="font-weight: 800; font-size: 0.82rem; color: #FFF;">Publikasi Selesai ke Kasir</div>
+                <div style="font-size: 0.71rem; color: var(--text-muted);" id="step4Desc">Installer terbit di GitHub Releases & auto-updater kasir aktif</div>
               </div>
             </div>
           </div>
 
-          <div style="display: flex; gap: 10px; margin-top: 6px;">
+          <div style="display: flex; gap: 10px; margin-top: 4px;">
             <a href="https://github.com/creadia-digitech/c-pos-desktop/actions" target="_blank" class="btn-action-sm" style="flex: 1; justify-content: center; padding: 10px;">
-              Buka Live Console GitHub Actions ↗
+              Live Log GitHub Actions ↗
             </a>
             <a href="https://github.com/creadia-digitech/c-pos-desktop/releases" target="_blank" class="btn-action-sm" style="flex: 1; justify-content: center; padding: 10px;">
-              Buka Halaman Rilis GitHub ↗
+              Halaman Rilis GitHub ↗
             </a>
           </div>
         </div>
@@ -1032,11 +1158,11 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="toast">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00B894" stroke-width="2.5">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00E599" stroke-width="2.5">
       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
       <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
-    <span id="toastMsg" style="font-weight: 700; font-size: 0.85rem;"></span>
+    <span id="toastMsg" style="font-weight: 700; font-size: 0.84rem;"></span>
   </div>
 
   <script>
@@ -1049,8 +1175,9 @@
     let currentSelectedType = 'LIFE';
     let currentGeneratedKey = '';
     let pollInterval = null;
+    let latestKnownVersion = '1.0.1';
 
-    // Initialize saved token from browser storage (private to developer laptop)
+    // Initialize saved token from browser storage (private to developer machine)
     const savedToken = localStorage.getItem(TOKEN_KEY) || '';
     if (savedToken) {
       document.getElementById('inputGhToken').value = savedToken;
@@ -1326,34 +1453,108 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
     // ── Cloud Release Engine (GitHub Actions Integration) ──
     function toggleTokenVisibility() {
       const input = document.getElementById('inputGhToken');
-      input.type = input.type === 'password' ? 'text' : 'password';
+      const label = document.getElementById('btnToggleTokenText');
+      if (input.type === 'password') {
+        input.type = 'text';
+        label.innerText = 'Sembunyi';
+      } else {
+        input.type = 'password';
+        label.innerText = 'Lihat Token';
+      }
+    }
+
+    function setVersionQuick(type) {
+      const parts = latestKnownVersion.replace(/^v/i, '').split('.').map(n => parseInt(n) || 0);
+      let major = parts[0] || 1;
+      let minor = parts[1] || 0;
+      let patch = parts[2] || 0;
+
+      if (type === 'patch') patch++;
+      else if (type === 'minor') { minor++; patch = 0; }
+      else if (type === 'major') { major++; minor = 0; patch = 0; }
+
+      const nextVer = `${major}.${minor}.${patch}`;
+      document.getElementById('inputReleaseVersion').value = nextVer;
+      showToast(`Versi diatur ke ${nextVer}`);
+    }
+
+    function insertChangelogTemplate(type) {
+      const area = document.getElementById('inputChangelog');
+      if (type === 'thermal') {
+        area.value = 'Perbaikan performa cetak printer thermal USB/Bluetooth 58mm & 80mm, serta peningkatan ketajaman barcode struk kasir.';
+      } else if (type === 'perf') {
+        area.value = 'Peningkatan performa database SQLite, optimasi konsumsi memori kasir, dan penyesuaian stabilitas antarmuka.';
+      } else if (type === 'feature') {
+        area.value = 'Penambahan fitur diskon bertingkat, opsi ekspor laporan excel/csv, dan peningkatan manajemen shift kasir.';
+      }
+      showToast('Template changelog dimasukkan!');
     }
 
     async function checkGitHubReleaseStatus() {
       const token = document.getElementById('inputGhToken').value.trim();
-      localStorage.setItem(TOKEN_KEY, token);
+      if (token) localStorage.setItem(TOKEN_KEY, token);
+
+      const btnSync = document.getElementById('btnSyncStatus');
+      btnSync.style.opacity = '0.6';
 
       try {
         const headers = { 'Accept': 'application/vnd.github.v3+json' };
-        if (token) headers['Authorization'] = `token ${token}`;
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
         const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, { headers });
         if (res.ok) {
           const data = await res.json();
-          document.getElementById('ghLatestVersion').innerText = data.tag_name || data.name || 'v1.0.0';
-          
+          const ver = data.tag_name || data.name || 'v1.0.1';
+          latestKnownVersion = ver;
+          document.getElementById('ghLatestVersion').innerText = ver;
+
+          // Auto suggest next patch version
+          const parts = ver.replace(/^v/i, '').split('.').map(n => parseInt(n) || 0);
+          const nextPatch = `${parts[0] || 1}.${parts[1] || 0}.${(parts[2] || 0) + 1}`;
+          const currentInput = document.getElementById('inputReleaseVersion').value.trim();
+          if (!currentInput || currentInput === '1.0.1') {
+            document.getElementById('inputReleaseVersion').value = nextPatch;
+          }
+
           let dlCount = 0;
           if (Array.isArray(data.assets)) {
             data.assets.forEach(a => dlCount += (a.download_count || 0));
           }
-          document.getElementById('ghTotalDownloads').innerText = dlCount;
+          document.getElementById('ghTotalDownloads').innerText = `${dlCount} Unduhan`;
           showToast('Status GitHub tersinkronisasi live!');
         } else if (res.status === 404) {
           document.getElementById('ghLatestVersion').innerText = 'Belum ada rilis';
-          document.getElementById('ghTotalDownloads').innerText = '0';
+          document.getElementById('ghTotalDownloads').innerText = '0 Unduhan';
+        }
+
+        // Also check latest workflow run status
+        const runRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, { headers });
+        if (runRes.ok) {
+          const runData = await runRes.json();
+          const lastRun = runData.workflow_runs?.[0];
+          if (lastRun) {
+            if (lastRun.status === 'completed' && lastRun.conclusion === 'success') {
+              setPipelineStep(1, 'done');
+              setPipelineStep(2, 'done');
+              setPipelineStep(3, 'done');
+              setPipelineStep(4, 'done');
+              document.getElementById('trackerBadge').innerText = 'Sukses Terbit';
+              document.getElementById('trackerBadge').style.color = '#00E599';
+              document.getElementById('ghWorkflowStatus').innerText = 'Rilis Sukses (Idle)';
+            } else if (lastRun.status === 'in_progress') {
+              setPipelineStep(1, 'done');
+              setPipelineStep(2, 'done');
+              setPipelineStep(3, 'active');
+              document.getElementById('trackerBadge').innerText = 'Sedang Kompilasi...';
+              document.getElementById('trackerBadge').style.color = '#3B82F6';
+              document.getElementById('ghWorkflowStatus').innerText = 'Membungkus .EXE...';
+            }
+          }
         }
       } catch (e) {
         console.log('GitHub fetch notice:', e);
+      } finally {
+        btnSync.style.opacity = '1';
       }
     }
 
@@ -1367,7 +1568,7 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
         return;
       }
       if (!version) {
-        alert('Nomor versi rilis wajib diisi (misal: 1.0.1).');
+        alert('Nomor versi rilis wajib diisi (misal: 1.0.2).');
         return;
       }
 
@@ -1380,12 +1581,11 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
       setPipelineStep(1, 'active');
 
       try {
-        // Trigger workflow_dispatch event
         const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/release.yml/dispatches`, {
           method: 'POST',
           headers: {
             'Accept': 'application/vnd.github.v3+json',
-            'Authorization': `token ${token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -1421,27 +1621,37 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
             <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
             <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
           </svg>
-          <span>🚀 Mulai Kompilasi & Publikasi Cloud GitHub</span>
+          <span>🚀 Luncurkan Cloud Build & Rilis ke GitHub</span>
         `;
       }
     }
 
     function setPipelineStep(step, state) {
       const circle = document.getElementById(`step${step}Circle`);
+      const row = document.getElementById(`step${step}Row`);
       if (!circle) return;
+
       circle.className = `step-circle ${state}`;
+      if (row) {
+        if (state === 'active') row.className = 'pipeline-step step-active';
+        else if (state === 'done') row.className = 'pipeline-step step-done';
+        else row.className = 'pipeline-step';
+      }
+
       if (state === 'done') circle.innerHTML = '✓';
     }
 
     function resetPipeline() {
       for (let i = 1; i <= 4; i++) {
         const circle = document.getElementById(`step${i}Circle`);
+        const row = document.getElementById(`step${i}Row`);
         if (circle) {
           circle.className = 'step-circle';
           circle.innerHTML = i;
         }
+        if (row) row.className = 'pipeline-step';
       }
-      document.getElementById('trackerBadge').innerText = 'Menunggu';
+      document.getElementById('trackerBadge').innerText = 'Siap Siaga';
       document.getElementById('trackerBadge').style.color = '#CBD5E1';
     }
 
@@ -1455,7 +1665,7 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
           const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, {
             headers: {
               'Accept': 'application/vnd.github.v3+json',
-              'Authorization': `token ${token}`,
+              'Authorization': `Bearer ${token}`,
             }
           });
 
@@ -1467,19 +1677,22 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
                 setPipelineStep(2, 'done');
                 setPipelineStep(3, 'active');
                 document.getElementById('trackerBadge').innerText = 'Membungkus .EXE...';
+                document.getElementById('ghWorkflowStatus').innerText = 'Kompilasi di Windows Cloud...';
               } else if (latestRun.status === 'completed') {
                 clearInterval(pollInterval);
                 if (latestRun.conclusion === 'success') {
                   setPipelineStep(3, 'done');
                   setPipelineStep(4, 'done');
                   document.getElementById('trackerBadge').innerText = 'Sukses Terbit!';
-                  document.getElementById('trackerBadge').style.color = '#10B981';
+                  document.getElementById('trackerBadge').style.color = '#00E599';
                   document.getElementById('ghLatestVersion').innerText = `v${version}`;
                   document.getElementById('ghWorkflowStatus').innerText = 'Sukses';
                   showToast(`🎉 Versi v${version} telah berhasil dipublikasikan ke seluruh kasir!`);
+                  checkGitHubReleaseStatus();
                 } else {
                   document.getElementById('trackerBadge').innerText = 'Gagal';
                   document.getElementById('trackerBadge').style.color = '#EF4444';
+                  document.getElementById('ghWorkflowStatus').innerText = 'Gagal Build';
                   alert('Proses rilis GitHub Actions selesai dengan kegagalan. Silakan periksa tab Actions di GitHub.');
                 }
               }
@@ -1487,8 +1700,8 @@ Aplikasi Anda langsung aktif resmi dan siap melayani transaksi pelanggan! Terima
           }
         } catch (e) {}
 
-        if (attempts > 60) clearInterval(pollInterval); // Stop polling after 10 mins
-      }, 10000);
+        if (attempts > 60) clearInterval(pollInterval);
+      }, 8000);
     }
 
     function showToast(msg) {
